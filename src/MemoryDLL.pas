@@ -1,76 +1,104 @@
 {============================================================================
-           __  __                              ___   _     _ ™
-          |  \/  | ___  _ __   ___  _ _  _  _ |   \ | |   | |
-          | |\/| |/ -_)| '  \ / _ \| '_|| || || |) || |__ | |__
-          |_|  |_|\___||_|_|_|\___/|_|   \_, ||___/ |____||____|
-                                         |__/
-            In-Memory Win64 DLL Loading & Execution for Pascal
+  __  __                              ___   _     _ ™
+ |  \/  | ___  _ __   ___  _ _  _  _ |   \ | |   | |
+ | |\/| |/ -_)| '  \ / _ \| '_|| || || |) || |__ | |__
+ |_|  |_|\___||_|_|_|\___/|_|   \_, ||___/ |____||____|
+                                |__/
+ In-Memory Win64 DLL Loading & Execution for Pascal
 
-                 Copyright © 2024-present tinyBigGAMES™ LLC
-                          All Rights Reserved.
+ Copyright © 2024-present tinyBigGAMES™ LLC
+ All Rights Reserved.
 
-                    Website: https://tinybiggames.com
-                    Email  : support@tinybiggames.com
+ https://github.com/tinyBigGAMES/MemoryDLL
 
-                 See LICENSE file for license information
------------------------------------------------------------------------------
-Summary:
-  The MemoryDLL unit provides advanced functionality for loading dynamic-link
-  libraries (win64 DLLs) directly from memory. This unit facilitates the
-  loading of DLLs from byte arrays or memory streams, retrieval of function
-  addresses within the loaded DLL, and proper unloading of the DLL module.
-  Unlike traditional methods that rely on filesystem operations, MemoryDLL
-  operates entirely in memory, offering a secure and efficient alternative
-  for DLL management.
+ BSD 3-Clause License
 
-Remarks:
-  The MemoryDLL unit is meticulously crafted to cater to expert Pascal
-  developers who require low-level control over DLL operations. By
-  eliminating the dependency on the filesystem, this unit enhances security
-  by preventing unauthorized access to DLL files and reduces I/O overhead,
-  thereby improving application performance.
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
 
-  Key Features:
-    - LoadFromMemory: Loads a DLL from a memory buffer, such as a byte array
-      or memory stream, without writing to the disk.
-    - GetFunctionAddress: Retrieves the address of an exported function
-      within the loaded DLL, enabling direct invocation of the function.
-    - FreeModule: Unloads the DLL from memory, ensuring that all associated
-      resources are properly released.
-    - ErrorHandling: Comprehensive error detection and handling mechanisms to
-      manage scenarios such as invalid DLL data, memory allocation failures,
-      and function resolution issues.
+ 1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
 
-  Implementation Details:
-    1. Utilizes low-level Windows API functions and memory management
-       techniques to parse and execute DLLs directly from memory. This
-       includes manual mapping of the DLL sections, relocation handling, and
-       resolution of import/export tables.
-    2. Ensures compatibility with standard DLL interfaces, allowing seamless
-       integration with existing applications and libraries.
-    3. Incorporates security best practices to prevent common vulnerabilities
-       associated with DLL loading, such as DLL hijacking and code injection.
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
 
-  Usage Scenarios:
-    - Embedding DLLs within the main executable for distribution, eliminating
-      the need to manage separate DLL files.
-    - Loading encrypted or obfuscated DLLs to enhance application security.
-    - Facilitating dynamic plugin systems where plugins are provided as
-      in-memory modules.
+ 3. Neither the name of the copyright holder nor the names of its
+    contributors may be used to endorse or promote products derived from
+    this software without specific prior written permission.
 
-  Comprehensive documentation is provided for all public routines, types,
-  variables, and internal logic within the MemoryDLL unit. This ensures that
-  expert Pascal developers can effortlessly maintain, extend, and optimize
-  the unit for future requirements. Additionally, inline comments elucidate
-  complex operations and decision-making processes, promoting code
-  readability and maintainability.
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
 
-Acknowledgment:
-  This unit is based on the original Delphi MemoryModule project by
-  Fr0sT-Brutal, available at:
-    https://github.com/Fr0sT-Brutal/Delphi_MemoryModule
-  Credit goes to the original developer for their foundational work, which
-  this unit builds upon.
+ -----------------------------------------------------------------------------
+
+ Summary:
+   The MemoryDLL unit provides advanced functionality for loading dynamic-link
+   libraries (win64 DLLs) directly from memory. This unit facilitates the
+   loading of DLLs from byte arrays or memory streams, retrieval of function
+   addresses within the loaded DLL, and proper unloading of the DLL module.
+   Unlike traditional methods that rely on filesystem operations, MemoryDLL
+   operates entirely in memory, offering a secure and efficient alternative
+   for DLL management.
+
+ Remarks:
+   The MemoryDLL unit is meticulously crafted to cater to expert Pascal
+   developers who require low-level control over DLL operations. By
+   eliminating the dependency on the filesystem, this unit enhances security
+   by preventing unauthorized access to DLL files and reduces I/O overhead,
+   thereby improving application performance.
+
+ Key Features:
+   - LoadFromMemory: Loads a DLL from a memory buffer, such as a byte array
+     or memory stream, without writing to the disk.
+   - GetFunctionAddress: Retrieves the address of an exported function
+     within the loaded DLL, enabling direct invocation of the function.
+   - FreeModule: Unloads the DLL from memory, ensuring that all associated
+     resources are properly released.
+   - ErrorHandling: Comprehensive error detection and handling mechanisms to
+     manage scenarios such as invalid DLL data, memory allocation failures,
+     and function resolution issues.
+
+ Implementation Details:
+   1. Utilizes low-level Windows API functions and memory management
+      techniques to parse and execute DLLs directly from memory. This
+      includes manual mapping of the DLL sections, relocation handling, and
+      resolution of import/export tables.
+   2. Ensures compatibility with standard DLL interfaces, allowing seamless
+      integration with existing applications and libraries.
+   3. Incorporates security best practices to prevent common vulnerabilities
+      associated with DLL loading, such as DLL hijacking and code injection.
+
+ Usage Scenarios:
+   - Embedding DLLs within the main executable for distribution, eliminating
+     the need to manage separate DLL files.
+   - Loading encrypted or obfuscated DLLs to enhance application security.
+   - Facilitating dynamic plugin systems where plugins are provided as
+     in-memory modules.
+
+ Comprehensive documentation is provided for all public routines, types,
+ variables, and internal logic within the MemoryDLL unit. This ensures that
+ expert Pascal developers can effortlessly maintain, extend, and optimize
+ the unit for future requirements. Additionally, inline comments elucidate
+ complex operations and decision-making processes, promoting code
+ readability and maintainability.
+
+ Acknowledgment:
+   This unit is based on the original Delphi MemoryModule project by
+   Fr0sT-Brutal, available at:
+     https://github.com/Fr0sT-Brutal/Delphi_MemoryModule
+   Credit goes to the original developer for their foundational work, which
+   this unit builds upon.
+
 =============================================================================}
 
 unit MemoryDLL;
@@ -82,7 +110,8 @@ unit MemoryDLL;
 interface
 
 uses
-  Windows;
+  Windows,
+  Math;
 
 /// <summary>
 /// Loads a module from a memory image, emulating the behavior of the Windows API LoadLibrary function.
@@ -1276,6 +1305,21 @@ begin
   // Call the internal MemoryFreeLibrary function with the module pointer
   MemoryFreeLibrary(Pointer(AModule));
 end;
+
+initialization
+{$IFNDEF FPC}
+  // Enable memory leak reporting on application shutdown in Delphi.
+  // This helps identify any memory leaks that might occur while using this unit.
+  // This directive has no effect in Free Pascal Compiler (FPC) as it is Delphi-specific.
+  ReportMemoryLeaksOnShutdown := True;
+{$ENDIF}
+
+  // Configure floating-point exception handling.
+  // Sets the exception mask to include floating-point overflow and invalid operation exceptions.
+  // This prevents runtime errors for certain floating-point operations that would normally trigger exceptions.
+  SetExceptionMask(GetExceptionMask + [exOverflow, exInvalidOp]);
+
+finalization
 
 end.
 
