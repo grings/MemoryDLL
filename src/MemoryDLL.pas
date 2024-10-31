@@ -58,12 +58,12 @@
    thereby improving application performance.
 
  Key Features:
-   - LoadFromMemory: Loads a DLL from a memory buffer, such as a byte array
+   - LoadLibrary: Loads a DLL from a memory buffer, such as a byte array
      or memory stream, without writing to the disk.
-   - GetFunctionAddress: Retrieves the address of an exported function
-     within the loaded DLL, enabling direct invocation of the function.
-   - FreeModule: Unloads the DLL from memory, ensuring that all associated
+   - FreeLibrary: Unloads the DLL from memory, ensuring that all associated
      resources are properly released.
+   - GetProcAddress: Retrieves the address of an exported function
+     within the loaded DLL, enabling direct invocation of the function.
    - ErrorHandling: Comprehensive error detection and handling mechanisms to
      manage scenarios such as invalid DLL data, memory allocation failures,
      and function resolution issues.
@@ -119,8 +119,15 @@ Changed:
 unit MemoryDLL;
 
 {$IFDEF FPC}
-  {$mode delphi}
+{$MODE DELPHIUNICODE}
 {$ENDIF}
+
+{$IFNDEF WIN64}
+  {$MESSAGE Error 'Unsupported platform'}
+{$ENDIF}
+
+{$Z4}
+{$A8}
 
 interface
 
