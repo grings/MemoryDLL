@@ -24,7 +24,7 @@ Summary:
   for DLL management.
 
 Remarks:
-  The MemoryDLL unit is meticulously crafted to cater to expert Delphi
+  The MemoryDLL unit is meticulously crafted to cater to expert Pascal
   developers who require low-level control over DLL operations. By
   eliminating the dependency on the filesystem, this unit enhances security
   by preventing unauthorized access to DLL files and reduces I/O overhead,
@@ -60,7 +60,7 @@ Remarks:
 
   Comprehensive documentation is provided for all public routines, types,
   variables, and internal logic within the MemoryDLL unit. This ensures that
-  expert Delphi developers can effortlessly maintain, extend, and optimize
+  expert Pascal developers can effortlessly maintain, extend, and optimize
   the unit for future requirements. Additionally, inline comments elucidate
   complex operations and decision-making processes, promoting code
   readability and maintainability.
@@ -177,7 +177,7 @@ function GetProcAddress(const AModule: THandle; const AName: PAnsiChar): Pointer
 
 implementation
 
-// Conditional type declarations for compatibility with different Delphi versions.
+// Conditional type declarations for compatibility with different Delphi/FreePascal versions.
 // These types are used to interpret the structure of the PE (Portable Executable) format.
 
 {$IF NOT DECLARED(IMAGE_BASE_RELOCATION)}
