@@ -112,7 +112,7 @@ uses
 /// will result in memory leaks and potential resource exhaustion.
 /// </para>
 /// </remarks>
-function LoadLibrary(Data: Pointer): THandle; stdcall;
+function LoadLibrary(const AData: Pointer): THandle; stdcall;
 
 /// <summary>
 /// Frees a module that was previously loaded into memory using the LoadLibrary function.
@@ -136,7 +136,7 @@ function LoadLibrary(Data: Pointer): THandle; stdcall;
 /// memory via LoadLibrary. It is designed to manage the resources associated with in-memory modules effectively.
 /// </para>
 /// </remarks>
-procedure FreeLibrary(Module: THandle); stdcall;
+procedure FreeLibrary(const AModule: THandle); stdcall;
 
 /// <summary>
 /// Retrieves the address of an exported function or variable from a module that has been loaded into memory
@@ -173,7 +173,7 @@ procedure FreeLibrary(Module: THandle); stdcall;
 /// modules.
 /// </para>
 /// </remarks>
-function GetProcAddress(Module: THandle; const Name: PAnsiChar): Pointer; stdcall;
+function GetProcAddress(const AModule: THandle; const AName: PAnsiChar): Pointer; stdcall;
 
 implementation
 
@@ -1239,10 +1239,10 @@ end;
   Returns:
     Handle to the loaded module.
 }
-function LoadLibrary(Data: Pointer): THandle;
+function LoadLibrary(const AData: Pointer): THandle;
 begin
   // Call the internal MemoryLoadLibrary function and cast its result to THandle
-  Result := THandle(MemoryLoadLibrary(Data));
+  Result := THandle(MemoryLoadLibrary(AData));
 end;
 
 {
@@ -1257,10 +1257,10 @@ end;
   Returns:
     Pointer to the requested function.
 }
-function GetProcAddress(Module: THandle; const Name: PAnsiChar): Pointer;
+function GetProcAddress(const AModule: THandle; const AName: PAnsiChar): Pointer;
 begin
   // Call the internal MemoryGetProcAddress function with the module pointer and function name
-  Result := MemoryGetProcAddress(Pointer(Module), Name);
+  Result := MemoryGetProcAddress(Pointer(AModule), AName);
 end;
 
 {
@@ -1271,10 +1271,10 @@ end;
   Parameters:
     Module - Handle to the module to be freed.
 }
-procedure FreeLibrary(Module: THandle);
+procedure FreeLibrary(const AModule: THandle);
 begin
   // Call the internal MemoryFreeLibrary function with the module pointer
-  MemoryFreeLibrary(Pointer(Module));
+  MemoryFreeLibrary(Pointer(AModule));
 end;
 
 end.
