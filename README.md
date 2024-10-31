@@ -77,7 +77,7 @@ Retrieves the address of an exported function from a loaded DLL, similar to the 
 To successfully integrate **MemoryDLL** into your project, please follow these steps:
 
 1. **Download the Latest Version 📥**
-   - Visit the official **MemoryDLL** repository and download the latest release.
+   - Visit the official **MemoryDLL** repository and download the <a href="https://github.com/tinyBigGAMES/MemoryDLL/archive/refs/heads/main.zip" target="_blank">latest release</a>.
 
 2. **Unzip the Package 📂**
    - Once the download is complete, extract the contents of the zip file to a convenient location on your device's filesystem. The extracted folder should contain the MemoryDLL source code, documentation, and any necessary dependencies.
