@@ -13,9 +13,9 @@ The **MemoryDLL** unit provides advanced functionality for loading dynamic-link 
 
 ### Features ✨
 
-- **LoadFromMemory**: Loads a DLL from a memory buffer without writing to the disk 💽.
-- **GetFunctionAddress**: Retrieves the address of an exported function within the loaded DLL, enabling direct function calls 📞.
-- **FreeModule**: Unloads the DLL from memory, ensuring all associated resources are properly released 🔄.
+- **LoadLibrary**: Loads a DLL from a memory buffer without writing to the disk 💽.
+- **FreeLibrary**: Unloads the DLL from memory, ensuring all associated resources are properly released 🔄.
+- **GetProcAddress**: Retrieves the address of an exported function within the loaded DLL, enabling direct function calls 📞.
 - **Comprehensive Error Handling**: Manages issues such as invalid DLL data 🚫, memory allocation failures 🚨, and function resolution issues 🔧.
 
 ### Key Benefits 🌟
