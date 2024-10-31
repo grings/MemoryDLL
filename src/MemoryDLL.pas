@@ -99,6 +99,21 @@
    Credit goes to the original developer for their foundational work, which
    this unit builds upon.
 
+-----------------------------------------------------------------------------
+>>> CHANGELOG <<<
+
+Version 0.1.0 - 2024-10-31
+---------------------------
+Added:
+  - Initial release of MemoryDLL, featuring support for loading, freeing,
+    and accessing DLL functions directly from memory.
+
+Fixed:
+  - N/A
+
+Changed:
+  - N/A
+
 =============================================================================}
 
 unit MemoryDLL;
@@ -112,6 +127,39 @@ interface
 uses
   Windows,
   Math;
+
+const
+  /// <summary>
+  /// Major version of the MemoryDLL.
+  /// </summary>
+  /// <remarks>
+  /// This represents the main version number, typically updated for significant changes or milestones.
+  /// </remarks>
+  MEMORYDLL_MAJOR_VERSION = '0';
+
+  /// <summary>
+  /// Minor version of the MemoryDLL.
+  /// </summary>
+  /// <remarks>
+  /// This is incremented for smaller, incremental improvements or updates.
+  /// </remarks>
+  MEMORYDLL_MINOR_VERSION = '1';
+
+  /// <summary>
+  /// Patch version of the MemoryDLL.
+  /// </summary>
+  /// <remarks>
+  /// This number increases for bug fixes or minor improvements that do not affect major or minor versions.
+  /// </remarks>
+  MEMORYDLL_PATCH_VERSION = '0';
+
+  /// <summary>
+  /// Full version of the MemoryDLL, formatted as Major.Minor.Patch.
+  /// </summary>
+  /// <remarks>
+  /// This combines the major, minor, and patch versions into a single version string.
+  /// </remarks>
+  MEMORYDLL_VERSION = MEMORYDLL_MAJOR_VERSION + '.' + MEMORYDLL_MINOR_VERSION + '.' + MEMORYDLL_PATCH_VERSION;
 
 /// <summary>
 /// Loads a module from a memory image, emulating the behavior of the Windows API LoadLibrary function.
