@@ -793,15 +793,6 @@ begin
   Result := LResultStatus;
 end;
 
-/// <summary>
-/// Loads a DLL from memory and sets up function hooks.
-/// </summary>
-/// <param name="AData">
-/// Pointer to the DLL data in memory.
-/// </param>
-/// <returns>
-/// Returns a handle to the loaded DLL if successful; otherwise, returns 0.
-/// </returns>
 function MemoryLoadLibrary(const AData: Pointer): THandle;
 begin
   // Enter critical section to ensure thread-safe operations
