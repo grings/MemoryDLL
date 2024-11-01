@@ -13,7 +13,7 @@ The **MemoryDLL** unit provides advanced functionality for loading dynamic-link 
 
 ### Features ✨
 
-- **LoadLibrary**: Loads a DLL from a memory buffer without writing to the disk 💽.
+- **MemoryLoadLibrary**: Loads a DLL from a memory buffer without writing to the disk 💽.
 - **FreeLibrary**: Unloads the DLL from memory, ensuring all associated resources are properly released 🔄.
 - **GetProcAddress**: Retrieves the address of an exported function within the loaded DLL, enabling direct function calls 📞.
 - **Comprehensive Error Handling**: Manages issues such as invalid DLL data 🚫, memory allocation failures 🚨, and function resolution issues 🔧.
@@ -50,27 +50,12 @@ The **MemoryDLL** unit provides advanced functionality for loading dynamic-link 
 
 ### Public Functions 📖
 
-#### LoadLibrary 📜
+#### MemoryLoadLibrary 📜
 
 Loads a module from a memory image, mimicking the behavior of the Windows API `LoadLibrary` function. It parses the PE format, performs necessary relocations, resolves imports, and initializes the module.
 
 - **Parameters**: `Data: Pointer` – A pointer to the memory image conforming to the PE format.
 - **Returns**: `THandle` representing the loaded module or `0` on failure.
-
-#### FreeLibrary 🚫
-
-Frees a module loaded with `LoadLibrary`. It releases all memory and resources associated with the DLL, ensuring clean detachment.
-
-- **Parameters**: `Module: THandle` – Handle of the module to be freed.
-
-#### GetProcAddress 🔍
-
-Retrieves the address of an exported function from a loaded DLL, similar to the Windows API `GetProcAddress` function.
-
-- **Parameters**:
-  - `Module: THandle` – Handle to the loaded module.
-  - `Name: PAnsiChar` – Name of the function to retrieve.
-- **Returns**: `Pointer` to the function, or `nil` if not found.
 
 ### Installation 🛠️
 
@@ -85,9 +70,9 @@ To successfully integrate **MemoryDLL** into your project, please follow these s
 3. **Add MemoryDLL to Your Project ➕**
    - Add **MemoryDLL** to your project's `uses` section. This inclusion will make the **MemoryDLL** unit available for use in your application. Ensure that the path to the **MemoryDLL** source file is correctly configured in your project settings to avoid compilation errors.
 
-4. **Integration as a Drop-in Replacement 🔄**
-   - The **MemoryDLL** unit is designed to serve as a drop-in replacement for the Windows API functions `LoadLibrary`, `FreeLibrary`, and `GetProcAddress`. Simply replace existing calls to these API functions with their **MemoryDLL** counterparts (`LoadFromMemory`, `FreeModule`, `GetFunctionAddress`). This seamless substitution allows you to benefit from in-memory DLL management without major code modifications.
-
+4. **Seamless Integration with Windows API Compatibility 🔄**
+   - The **MemoryDLL** unit allows for easy integration by providing `MemoryLoadLibrary` to load DLLs directly from memory. Once loaded, standard Windows API calls such as `FreeLibrary` and `GetProcAddress` can be used to manage the in-memory DLL as if it were loaded from the filesystem. This design ensures minimal changes to existing code, maintaining compatibility with Windows API conventions while enabling efficient in-memory DLL handling.
+   
 5. **Test the Integration ✅**
    - It is recommended to thoroughly test your project after integrating **MemoryDLL** to ensure that all DLLs are being correctly loaded, utilized, and unloaded from memory. Given the in-memory nature of this library, testing will help identify any potential issues related to memory management or function resolution.
    - Created/tested with Delphi 12.2, on Windows 11, 64-bit (latest version)
@@ -194,7 +179,7 @@ begin
 
   try
     // Attempt to load the DLL from the resource stream.
-    DLLHandle := LoadLibrary(LResStream.Memory);
+    DLLHandle := MemoryLoadLibrary(LResStream.Memory);
     if DLLHandle = 0 then Exit; // Loading failed.
 
     // Retrieve and initialize any necessary function exports from the DLL.
@@ -223,7 +208,7 @@ end;
 
 initialization
   // Attempt to load the DLL upon program startup. Halt execution with error
-  //code 1 if it fails.
+  // code 1 if it fails.
   if not LoadDLL() then
   begin
     Halt(1);
