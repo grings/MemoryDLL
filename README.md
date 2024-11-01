@@ -115,30 +115,31 @@ implementation
 
   Variables:
     - DLLHandle: THandle
-        - A handle to the loaded DLL. Initialized to 0, indicating the DLL has not been loaded.
-          It is updated with the handle returned from LoadLibrary when the DLL is successfully
-          loaded from memory.
+        - A handle to the loaded DLL. Initialized to 0, indicating the DLL has
+          not been loaded. It is updated with the handle returned from
+          LoadLibrary when the DLL is successfullyloaded from memory.
 
   Functions:
     - LoadDLL: Boolean
-        - Loads the DLL from an embedded resource and initializes it by retrieving necessary
-          exported functions. Returns True if the DLL is loaded successfully, otherwise False.
+        - Loads the DLL from an embedded resource and initializes it by
+          retrieving necessary exported functions. Returns True if the DLL is
+          loaded successfully, otherwise False.
 
     - b6eb28fd6ebe48359ef93aef774b78d1: string
         - A GUID-named helper function that returns the resource name for the DLL.
           This GUID-like name helps avoid easy detection of the resource.
 
     - UnloadDLL: procedure
-        - Unloads the DLL by freeing the library associated with DLLHandle. Resets DLLHandle
-          to 0 to indicate the DLL is unloaded.
+        - Unloads the DLL by freeing the library associated with DLLHandle. Resets
+          DLLHandle to 0 to indicate the DLL is unloaded.
 
   Initialization:
-    - The LoadDLL function is called during initialization, and the program will terminate
-      with code 1 if the DLL fails to load.
+    - The LoadDLL function is called during initialization, and the program will
+      terminate with code 1 if the DLL fails to load.
 
   Finalization:
-    - The UnloadDLL procedure is called upon finalization, ensuring the DLL is unloaded
-      before program termination.
+    - The UnloadDLL procedure is called upon finalization, ensuring the DLL is
+      unloaded before program termination.
 
 }
 
@@ -148,27 +149,31 @@ var
 {
   LoadDLL
   --------
-  Attempts to load a DLL directly from a resource embedded within the executable file.
-  This DLL is expected to be stored as an RCDATA resource under a specific GUID-like name.
+  Attempts to load a DLL directly from a resource embedded within the executable
+  file. This DLL is expected to be stored as an RCDATA resource under a specific
+  GUID-like name.
 
   Returns:
     Boolean - True if the DLL is successfully loaded, False otherwise.
 }
 function LoadDLL(): Boolean;
 var
-  LResStream: TResourceStream; // Stream to access the DLL data stored in the resource.
+  LResStream: TResourceStream; // Stream to access the DLL data stored in the
+  resource.
 
   {
     b6eb28fd6ebe48359ef93aef774b78d1
     ---------------------------------
-    Returns the name of the embedded DLL resource. Uses a GUID-like name for obfuscation.
+    Returns the name of the embedded DLL resource. Uses a GUID-like name for
+    obfuscation.
 
     Returns:
       string - The name of the resource containing the DLL data.
   }
   function b6eb28fd6ebe48359ef93aef774b78d1(): string;
   const
-    CValue = 'b87deef5bbfd43c3a07379e26f4dec9b'; // GUID-like resource name for the embedded DLL.
+    // GUID-like resource name for the embedded DLL.
+    CValue = 'b87deef5bbfd43c3a07379e26f4dec9b'; 
   begin
     Result := CValue;
   end;
@@ -184,7 +189,8 @@ begin
     PChar(b6eb28fd6ebe48359ef93aef774b78d1()), RT_RCDATA) <> 0)) then Exit;
 
   // Create a stream for the DLL resource data.
-  LResStream := TResourceStream.Create(HInstance, b6eb28fd6ebe48359ef93aef774b78d1(), RT_RCDATA);
+  LResStream := TResourceStream.Create(HInstance,
+    b6eb28fd6ebe48359ef93aef774b78d1(), RT_RCDATA);
 
   try
     // Attempt to load the DLL from the resource stream.
@@ -203,7 +209,8 @@ end;
 {
   UnloadDLL
   ---------
-  Frees the loaded DLL, releasing any resources associated with DLLHandle, and resets DLLHandle to 0.
+  Frees the loaded DLL, releasing any resources associated with DLLHandle,
+  and resets DLLHandle to 0.
 }
 procedure UnloadDLL();
 begin
@@ -215,7 +222,8 @@ begin
 end;
 
 initialization
-  // Attempt to load the DLL upon program startup. Halt execution with error code 1 if it fails.
+  // Attempt to load the DLL upon program startup. Halt execution with error
+  //code 1 if it fails.
   if not LoadDLL() then
   begin
     Halt(1);
