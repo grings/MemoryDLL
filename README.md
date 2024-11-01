@@ -92,6 +92,140 @@ To successfully integrate **MemoryDLL** into your project, please follow these s
    - It is recommended to thoroughly test your project after integrating **MemoryDLL** to ensure that all DLLs are being correctly loaded, utilized, and unloaded from memory. Given the in-memory nature of this library, testing will help identify any potential issues related to memory management or function resolution.
    - Created/tested with Delphi 12.2, on Windows 11, 64-bit (latest version)
 
+### 📖 Example Usage
+
+To instantiate **MemoryDLL**, include the following code at the end of the unit’s implementation section. This code attempts to load the DLL as an embedded resource: 
+
+```delphi    
+
+uses
+  Windows,
+  MemoryDLL;  
+  
+...
+
+implementation
+
+{
+  This code is an example of using MemoryDLL to load an embedded a DLL directly
+  from an embedded resource in memory, ensuring that no filesystem access is
+  required. It includes methods for loading, initializing, and unloading the
+  DLL. The DLL is loaded from a resource with a GUID name, providing a measure
+  of security by obfuscating the resource’s identity.
+
+  Variables:
+    - DLLHandle: THandle
+        - A handle to the loaded DLL. Initialized to 0, indicating the DLL has not been loaded.
+          It is updated with the handle returned from LoadLibrary when the DLL is successfully
+          loaded from memory.
+
+  Functions:
+    - LoadDLL: Boolean
+        - Loads the DLL from an embedded resource and initializes it by retrieving necessary
+          exported functions. Returns True if the DLL is loaded successfully, otherwise False.
+
+    - b6eb28fd6ebe48359ef93aef774b78d1: string
+        - A GUID-named helper function that returns the resource name for the DLL.
+          This GUID-like name helps avoid easy detection of the resource.
+
+    - UnloadDLL: procedure
+        - Unloads the DLL by freeing the library associated with DLLHandle. Resets DLLHandle
+          to 0 to indicate the DLL is unloaded.
+
+  Initialization:
+    - The LoadDLL function is called during initialization, and the program will terminate
+      with code 1 if the DLL fails to load.
+
+  Finalization:
+    - The UnloadDLL procedure is called upon finalization, ensuring the DLL is unloaded
+      before program termination.
+
+}
+
+var
+  DLLHandle: THandle = 0; // Global handle to the loaded DLL, 0 when not loaded.
+
+{
+  LoadDLL
+  --------
+  Attempts to load a DLL directly from a resource embedded within the executable file.
+  This DLL is expected to be stored as an RCDATA resource under a specific GUID-like name.
+
+  Returns:
+    Boolean - True if the DLL is successfully loaded, False otherwise.
+}
+function LoadDLL(): Boolean;
+var
+  LResStream: TResourceStream; // Stream to access the DLL data stored in the resource.
+
+  {
+    b6eb28fd6ebe48359ef93aef774b78d1
+    ---------------------------------
+    Returns the name of the embedded DLL resource. Uses a GUID-like name for obfuscation.
+
+    Returns:
+      string - The name of the resource containing the DLL data.
+  }
+  function b6eb28fd6ebe48359ef93aef774b78d1(): string;
+  const
+    CValue = 'b87deef5bbfd43c3a07379e26f4dec9b'; // GUID-like resource name for the embedded DLL.
+  begin
+    Result := CValue;
+  end;
+
+begin
+  Result := False;
+
+  // Check if the DLL is already loaded.
+  if DLLHandle <> 0 then Exit;
+
+  // Ensure the DLL resource exists.
+  if not Boolean((FindResource(HInstance, PChar(b6eb28fd6ebe48359ef93aef774b78d1()), RT_RCDATA) <> 0)) then Exit;
+
+  // Create a stream for the DLL resource data.
+  LResStream := TResourceStream.Create(HInstance, b6eb28fd6ebe48359ef93aef774b78d1(), RT_RCDATA);
+
+  try
+    // Attempt to load the DLL from the resource stream.
+    DLLHandle := LoadLibrary(LResStream.Memory);
+    if DLLHandle = 0 then Exit; // Loading failed.
+
+    // Retrieve and initialize any necessary function exports from the DLL.
+    GetExports(DLLHandle);
+
+    Result := True; // Successful load and initialization.
+  finally
+    LResStream.Free(); // Release the resource stream.
+  end;
+end;
+
+{
+  UnloadDLL
+  ---------
+  Frees the loaded DLL, releasing any resources associated with DLLHandle, and resets DLLHandle to 0.
+}
+procedure UnloadDLL();
+begin
+  if DLLHandle <> 0 then
+  begin
+    FreeLibrary(DLLHandle); // Unload the DLL.
+    DLLHandle := 0; // Reset DLLHandle to indicate the DLL is no longer loaded.
+  end;
+end;
+
+initialization
+  // Attempt to load the DLL upon program startup. Halt execution with error code 1 if it fails.
+  if not LoadDLL() then
+  begin
+    Halt(1);
+  end;
+
+finalization
+  // Ensure the DLL is unloaded upon program termination.
+  UnloadDLL();
+
+```
+
 ### Acknowledgments 🙏
 
 This project is based on the original **Delphi MemoryModule** project by [Fr0sT-Brutal](https://github.com/Fr0sT-Brutal/Delphi_MemoryModule). We gratefully acknowledge the foundational work that this unit builds upon.
