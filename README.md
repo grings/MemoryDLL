@@ -24,10 +24,6 @@ The **MemoryDLL** unit provides advanced functionality for loading dynamic-link 
 - **Performance Improvement ⚡**: Since DLLs are handled in-memory, the overhead of disk I/O operations is avoided, resulting in faster execution 🚀.
 - **Flexibility 🤹**: Suitable for embedding DLLs in the main executable, loading encrypted 🔐 or obfuscated DLLs, and supporting dynamic plugin systems where plugins are provided as in-memory modules.
 
-Here’s the updated documentation with `MemoryDLL` as the main focus:
-
----
-
 ### Implementation Details 🔍
 
 **MemoryDLL** enables in-memory DLL loading and redirection by using placeholder DLLs and hook-based loading to bypass traditional file-based DLL loading:
