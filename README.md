@@ -180,7 +180,8 @@ begin
   if DLLHandle <> 0 then Exit;
 
   // Ensure the DLL resource exists.
-  if not Boolean((FindResource(HInstance, PChar(b6eb28fd6ebe48359ef93aef774b78d1()), RT_RCDATA) <> 0)) then Exit;
+  if not Boolean((FindResource(HInstance,
+    PChar(b6eb28fd6ebe48359ef93aef774b78d1()), RT_RCDATA) <> 0)) then Exit;
 
   // Create a stream for the DLL resource data.
   LResStream := TResourceStream.Create(HInstance, b6eb28fd6ebe48359ef93aef774b78d1(), RT_RCDATA);
