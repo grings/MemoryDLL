@@ -222,7 +222,7 @@ finalization
 
 ### Acknowledgments 🙏
 
-This project is based on the original **Delphi MemoryModule** project by [Fr0sT-Brutal](https://github.com/Fr0sT-Brutal/Delphi_MemoryModule). We gratefully acknowledge the foundational work that this unit builds upon.
+This unit is based on the original **MemoryDll-DllRedirect** project by [A-Normal-User](https://github.com/A-Normal-User/MemoryDll-DllRedirect). We gratefully acknowledge the foundational work that this unit builds upon.
 
 ### License 📜
 
