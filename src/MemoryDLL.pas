@@ -215,10 +215,16 @@ uses
 
 const
   /// <summary>
-  /// Name of the DLL resource to hook.
+  /// Specifies the name of the placeholder DLL resource used to initiate the hooking process.
   /// </summary>
   /// <remarks>
-  /// This should be the name of the DLL resource embedded within the application, typically a GUID string.
+  /// This constant, <c>HOOK_REFERENCE_DLL</c>, represents the filename of a placeholder DLL resource, <c>advapi32res.dll</c>,
+  /// embedded within the application. It serves as a trigger for the hook mechanism, allowing the application to intercept
+  /// and redirect attempts to load this DLL to an actual in-memory DLL stored within the application. This approach bypasses
+  /// the traditional file-based DLL loading, offering enhanced security and reducing the reliance on physical disk files.
+  ///
+  /// When the operating system attempts to load <c>advapi32res.dll</c>, the hook intercepts the call, redirecting it to a
+  /// DLL loaded directly from memory. This facilitates dynamic DLL management in a controlled, secure memory-based context.
   /// </remarks>
   HOOK_REFERENCE_DLL = 'advapi32res.dll';
 
@@ -360,7 +366,7 @@ var
   NtOpenFileHook: THookManager = nil;          // Hook manager for NtOpenFile function
   NtMapViewOfSectionHook: THookManager = nil;  // Hook manager for NtMapViewOfSection function
   DllData: PByte = nil;                        // Pointer to the DLL data loaded in memory
-  CriticalSection: TCriticalSection;           // Critical section for thread-safe operations
+  CriticalSection: TCriticalSection = nil;     // Critical section for thread-safe operations
 
 /// <summary>
 /// Searches for a substring within a wide-character string.
@@ -684,7 +690,7 @@ function HookNtMapViewOfSection(
   AWin32Protect: ULONG
 ): NTSTATUS; stdcall;
 var
-  LOrigNtMapViewOfSection: TNtMapViewOfSection; // Original NtMapViewOfSection function
+  LOldNtMapViewOfSection: TNtMapViewOfSection; // Original NtMapViewOfSection function
 begin
   // Stop the current hook to prevent recursion
   NtMapViewOfSectionHook.Stop();
@@ -692,9 +698,9 @@ begin
   if DllData = nil then
   begin
     // Retrieve the original NtMapViewOfSection function pointer
-    LOrigNtMapViewOfSection := TNtMapViewOfSection(NtMapViewOfSectionHook.GetOldFunction());
+    LOldNtMapViewOfSection := TNtMapViewOfSection(NtMapViewOfSectionHook.GetOldFunction());
     // Call the original NtMapViewOfSection function with provided parameters
-    Result := LOrigNtMapViewOfSection(
+    Result := LOldNtMapViewOfSection(
       ASectionHandle,
       AProcessHandle,
       ABaseAddress^,
