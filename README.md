@@ -24,15 +24,19 @@ The **MemoryDLL** unit provides advanced functionality for loading dynamic-link 
 - **Performance Improvement ⚡**: Since DLLs are handled in-memory, the overhead of disk I/O operations is avoided, resulting in faster execution 🚀.
 - **Flexibility 🤹**: Suitable for embedding DLLs in the main executable, loading encrypted 🔐 or obfuscated DLLs, and supporting dynamic plugin systems where plugins are provided as in-memory modules.
 
+Here’s the updated documentation with `MemoryDLL` as the main focus:
+
+---
+
 ### Implementation Details 🔍
 
-**MemoryDLL** uses low-level Windows API functions to manage DLLs entirely from memory:
+**MemoryDLL** enables in-memory DLL loading and redirection by using placeholder DLLs and hook-based loading to bypass traditional file-based DLL loading:
 
-1. **Manual Mapping 🗺️**: The unit manually parses the DLL's Portable Executable (PE) format, maps its sections, and relocates addresses.
-2. **Relocation Handling 🔄**: Handles relocation entries to ensure the DLL functions correctly at its loaded memory address.
-3. **Import Table Resolution 📋**: Resolves all imported symbols, making the DLL fully functional once loaded.
+1. **Hook-Based Loading 🚀**: Redirects calls to load a specific DLL by monitoring attempts to load a placeholder DLL (e.g., `advapi32res.dll`). This DLL acts as a trigger for the hook to intercept and handle redirection to an in-memory DLL.
+2. **Placeholder DLL 📂**: The placeholder DLL, which can be any specified DLL file, is not embedded within the application. It is only used to initiate the hook process, allowing seamless redirection to the in-memory DLL.
+3. **In-Memory Execution ⚙️**: The redirected DLL operates fully in memory, making all its functions accessible as if loaded conventionally. This approach avoids dependence on the filesystem, enhancing both performance and security.
 
-**Compatibility 🤝**: This unit is designed to be compatible with standard DLL interfaces, making it easy to integrate with existing applications. Additionally, security best practices are incorporated to prevent vulnerabilities like code injection 💉.
+**Compatibility 🤝**: The `MemoryDLL` unit is compatible with standard DLL interfaces, allowing for easy integration with existing applications. The in-memory redirection method also reduces security risks, such as code injection 💉, offering a secure alternative for DLL management.
 
 ### Usage Scenarios 🎯
 

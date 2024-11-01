@@ -63,14 +63,18 @@
    - You can then use standard win32 GetProcAddress and FreeLibrary as normal
 
  Implementation Details:
-   1. Utilizes low-level Windows API functions and memory management
-      techniques to parse and execute DLLs directly from memory. This
-      includes manual mapping of the DLL sections, relocation handling, and
-      resolution of import/export tables.
-   2. Ensures compatibility with standard DLL interfaces, allowing seamless
-      integration with existing applications and libraries.
-   3. Incorporates security best practices to prevent common vulnerabilities
-      associated with DLL loading, such as DLL hijacking and code injection.
+   1. Hook-Based Loading: Redirects calls to load a specific DLL by
+      monitoring attempts to load a placeholder DLL
+      (e.g., advapi32res.dll). This DLL acts as a trigger for the hook to
+      intercept and handle redirection to an in-memory DLL.
+   2. Placeholder DLL: The placeholder DLL, which can be any specified
+      DLL file, is not embedded within the application. It is only used to
+      initiate the hook process, allowing seamless redirection to the
+      in-memory DLL.
+   3. In-Memory Execution: The redirected DLL operates fully in memory,
+      making all its functions accessible as if loaded conventionally.
+      This approach avoids dependence on the filesystem, enhancing both
+      performance and security.
 
  Usage Scenarios:
    - Embedding DLLs within the main executable for distribution, eliminating
