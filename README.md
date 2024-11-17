@@ -75,7 +75,7 @@ To successfully integrate **MemoryDLL** into your project, please follow these s
    
 5. **Test the Integration ✅**
    - It is recommended to thoroughly test your project after integrating **MemoryDLL** to ensure that all DLLs are being correctly loaded, utilized, and unloaded from memory. Given the in-memory nature of this library, testing will help identify any potential issues related to memory management or function resolution.
-   - Created/tested with Delphi 12.2, on Windows 11, 64-bit (latest version)
+   - Created/tested with Delphi 12.2, on Windows 11, 64-bit (version 23H2)
 
 ### 📖 Example Usage
 
