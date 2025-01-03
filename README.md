@@ -16,7 +16,7 @@ The **MemoryDLL** unit provides advanced functionality for loading dynamic-link 
 
 ### Features ✨
 
-- **MemoryLoadLibrary**: Loads a DLL from a memory buffer without writing to the disk 💽.
+- **LoadMemoryDLL**: Loads a DLL from a memory buffer without writing to the disk 💽.
 - **FreeLibrary**: Unloads the DLL from memory, ensuring all associated resources are properly released 🔄.
 - **GetProcAddress**: Retrieves the address of an exported function within the loaded DLL, enabling direct function calls 📞.
 - **Comprehensive Error Handling**: Manages issues such as invalid DLL data 🚫, memory allocation failures 🚨, and function resolution issues 🔧.
@@ -26,22 +26,13 @@ The **MemoryDLL** unit provides advanced functionality for loading dynamic-link 
 - **Increased Security 🔒**: By eliminating the need to store DLLs on disk, **MemoryDLL** reduces the risk of DLL hijacking and unauthorized access.
 - **Performance Improvement ⚡**: Since DLLs are handled in-memory, the overhead of disk I/O operations is avoided, resulting in faster execution 🚀.
 - **Flexibility 🤹**: Suitable for embedding DLLs in the main executable, loading encrypted 🔐 or obfuscated DLLs, and supporting dynamic plugin systems where plugins are provided as in-memory modules.
-
-### Implementation Details 🔍
-
-**MemoryDLL** enables in-memory DLL loading and redirection by using placeholder DLLs and hook-based loading to bypass traditional file-based DLL loading:
-
-1. **Hook-Based Loading 🚀**: Redirects calls to load a specific DLL by monitoring attempts to load a placeholder DLL (e.g., `advapi32res.dll`). This DLL acts as a trigger for the hook to intercept and handle redirection to an in-memory DLL.
-2. **Placeholder DLL 📂**: The placeholder DLL, which can be any specified DLL file, is not embedded within the application. It is only used to initiate the hook process, allowing seamless redirection to the in-memory DLL.
-3. **In-Memory Execution ⚙️**: The redirected DLL operates fully in memory, making all its functions accessible as if loaded conventionally. This approach avoids dependence on the filesystem, enhancing both performance and security.
-
-**Compatibility 🤝**: The `MemoryDLL` unit is compatible with standard DLL interfaces, allowing for easy integration with existing applications. The in-memory redirection method also reduces security risks, such as code injection 💉, offering a secure alternative for DLL management.
+- **Compatibility 🤝**: The `MemoryDLL` unit is compatible with standard DLL interfaces, allowing for easy integration with existing applications. The in-memory redirection method also reduces security risks, such as code injection 💉, offering a secure alternative for DLL management.
 
 ### Usage Scenarios 🎯
 
 #### Embedding DLLs 📦
 
-- Embed DLLs directly within your executable. **MemoryDLL** allows you to store DLLs as resources or encrypted data and load them into memory at runtime, removing the need to distribute them as separate files.
+- Embed DLLs directly within your executable. **MemoryDLL** allows you to store DLLs as resources, static byte arrays or encrypted data and load them into memory at runtime, removing the need to distribute them as separate files.
 
 #### Encrypted DLL Loading 🔐
 
@@ -53,11 +44,12 @@ The **MemoryDLL** unit provides advanced functionality for loading dynamic-link 
 
 ### Public Functions 📖
 
-#### MemoryLoadLibrary 📜
+#### LoadMemoryDLL 📜
 
 Loads a module from a memory image, mimicking the behavior of the Windows API `LoadLibrary` function. It parses the PE format, performs necessary relocations, resolves imports, and initializes the module.
 
 - **Parameters**: `Data: Pointer` – A pointer to the memory image conforming to the PE format.
+- **Parameters**: `Size: NativeUInt` - The size, in bytes, of the DLL binary data stored in the memory block.
 - **Returns**: `THandle` representing the loaded module or `0` on failure.
 
 ### Installation 🛠️
@@ -74,11 +66,11 @@ To successfully integrate **MemoryDLL** into your project, please follow these s
    - Add **MemoryDLL** to your project's `uses` section. This inclusion will make the **MemoryDLL** unit available for use in your application. Ensure that the path to the **MemoryDLL** source file is correctly configured in your project settings to avoid compilation errors.
 
 4. **Seamless Integration with Windows API Compatibility 🔄**
-   - The **MemoryDLL** unit allows for easy integration by providing `MemoryLoadLibrary` to load DLLs directly from memory. Once loaded, standard Windows API calls such as `FreeLibrary` and `GetProcAddress` can be used to manage the in-memory DLL as if it were loaded from the filesystem. This design ensures minimal changes to existing code, maintaining compatibility with Windows API conventions while enabling efficient in-memory DLL handling.
+   - The **MemoryDLL** unit allows for easy integration by providing `LoadMemoryDLL` to load DLLs directly from memory. Once loaded, standard Windows API calls such as `FreeLibrary` and `GetProcAddress` can be used to manage the in-memory DLL as if it were loaded from the filesystem. This design ensures minimal changes to existing code, maintaining compatibility with Windows API conventions while enabling efficient in-memory DLL handling.
    
 5. **Test the Integration ✅**
    - It is recommended to thoroughly test your project after integrating **MemoryDLL** to ensure that all DLLs are being correctly loaded, utilized, and unloaded from memory. Given the in-memory nature of this library, testing will help identify any potential issues related to memory management or function resolution.
-   - Created/tested with Delphi 12.2, on Windows 11, 64-bit (version 23H2)
+   - Created/tested with Delphi 12.2, on Windows 11, 64-bit (version 24H2)
 
 ### 📖 Example Usage
 
@@ -182,7 +174,7 @@ begin
 
   try
     // Attempt to load the DLL from the resource stream.
-    DLLHandle := MemoryLoadLibrary(LResStream.Memory);
+    DLLHandle := LoadMemoryDLL(LResStream.Memory, LResStream.Size());
     if DLLHandle = 0 then Exit; // Loading failed.
 
     // Retrieve and initialize any necessary function exports from the DLL.
@@ -225,7 +217,8 @@ finalization
 
 ### Acknowledgments 🙏
 
-This unit is based on the original **MemoryDll-DllRedirect** project by [A-Normal-User](https://github.com/A-Normal-User/MemoryDll-DllRedirect). We gratefully acknowledge the foundational work that this unit builds upon.
+This project uses the following open-source libraries:
+  * perfect-loader - https://github.com/EvanMcBroom/perfect-loader
 
 ### License 📜
 
