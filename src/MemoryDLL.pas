@@ -4953,15 +4953,6 @@ $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 );
 {$ENDREGION}
 
-const
-  PL_LOAD_FLAGS_NO_HEADER = $01;
-  PL_LOAD_FLAGS_NO_MODLIST = $02;
-  PL_LOAD_FLAGS_NO_NOTIFS = $04;
-  PL_LOAD_FLAGS_NO_THDCALL = $08;
-  PL_LOAD_FLAGS_OVRHDRS = $10;
-  PL_LOAD_FLAGS_USEHBP = $20;
-  PL_LOAD_FLAGS_USETXF = $40;
-
 var
   LoadDllFromMemory: function(DllBase: LPVOID; DllSize: SIZE_T; Flags: DWORD;
     FileName: LPCWSTR; PlFlags: DWORD; ModListName: LPCWSTR): HMODULE; stdcall;
@@ -4986,7 +4977,8 @@ var
 function LoadMemoryDLL(const AData: Pointer; const ASize: NativeUInt): THandle;
 begin
   // Calls an external function to load the DLL from memory.
-  Result := LoadDllFromMemory(AData, ASize, 0, PChar(TempFilename), PL_LOAD_FLAGS_USETXF, nil);
+  Result := LoadDllFromMemory(AData, ASize, 0, PChar(TempFilename), $40, nil);
+  writeln('size: ', TFile.GetSize(TempFilename));
 end;
 
 // Loads the custom DLL and initializes its exported function.
@@ -5042,6 +5034,7 @@ begin
   // Delete the temporary file, if it exists.
   if TFile.Exists(TempFilename) then
     TFile.Delete(TempFilename);
+  TempFilename := '';
 end;
 
 // Initialization block to load the DLL during application startup.
