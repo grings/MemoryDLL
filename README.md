@@ -172,7 +172,7 @@ begin
 
   try
     // Attempt to load the DLL from the resource stream.
-    DLLHandle := LoadMemoryDLL(LResStream.Memory, LResStream.Size());
+    DLLHandle := LoadMemoryDLL(LResStream.Memory, LResStream.Size;
     if DLLHandle = 0 then Exit; // Loading failed.
 
     // Retrieve and initialize any necessary function exports from the DLL.
