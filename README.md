@@ -1,3 +1,8 @@
+> ⚠️ **Project Archived — Development Has Moved**  
+> This project is no longer actively maintained and has been set to read-only.  
+> All future development has shifted to the superior [Dlluminator](https://github.com/tinyBigGAMES/Dlluminator).  
+> Please refer to that repository for ongoing updates, improvements, and support.
+
 ![MemoryDLL](media/memorydll.png)  
 [![Chat on Discord](https://img.shields.io/discord/754884471324672040?style=for-the-badge)](https://discord.gg/tPWjMwK)
 [![Follow on Bluesky](https://img.shields.io/badge/Bluesky-tinyBigGAMES-blue?style=for-the-badge&logo=bluesky)](https://bsky.app/profile/tinybiggames.com)
